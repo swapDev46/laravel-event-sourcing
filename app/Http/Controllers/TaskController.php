@@ -75,14 +75,14 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request, CreateTask $createTask): RedirectResponse
     {
-        $task = $createTask->handle($request->user(), $request->validated());
+        $createTask->handle($request->user(), $request->validated());
 
         Inertia::flash('toast', [
             'type' => 'success',
             'message' => __('Task created successfully.'),
         ]);
 
-        return to_route('tasks.show', $task);
+        return to_route('tasks.index');
     }
 
     /**
@@ -123,7 +123,7 @@ class TaskController extends Controller
             'message' => __('Task updated successfully.'),
         ]);
 
-        return to_route('tasks.show', $task);
+        return to_route('tasks.index');
     }
 
     /**

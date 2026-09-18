@@ -8,6 +8,8 @@ use Thunk\Verbs\State;
 
 class TaskState extends State
 {
+    public bool $exists = false;
+
     public int $user_id;
 
     public string $title;
@@ -21,6 +23,4 @@ class TaskState extends State
     public ?string $due_date = null;
 
     public ?string $completed_at = null;
-
-    public bool $deleted = false;
 }

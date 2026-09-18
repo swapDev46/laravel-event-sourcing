@@ -12,7 +12,7 @@ use Thunk\Verbs\Event;
 class TaskCreated extends Event
 {
     #[StateId(TaskState::class)]
-    public int $task_id;
+    public ?int $task_id = null;
 
     public int $user_id;
 
@@ -30,6 +30,7 @@ class TaskCreated extends Event
 
     public function apply(TaskState $state): void
     {
+        $state->exists = true;
         $state->user_id = $this->user_id;
         $state->title = $this->title;
         $state->description = $this->description;
@@ -37,20 +38,21 @@ class TaskCreated extends Event
         $state->priority = $this->priority;
         $state->due_date = $this->due_date;
         $state->completed_at = $this->completed_at;
-        $state->deleted = false;
     }
 
-    // public function handle(): void
-    // {
-    //     Task::create([
-    //         'id' => $this->task_id,
-    //         'user_id' => $this->user_id,
-    //         'title' => $this->title,
-    //         'description' => $this->description,
-    //         'status' => $this->status,
-    //         'priority' => $this->priority,
-    //         'due_date' => $this->due_date,
-    //         'completed_at' => $this->completed_at,
-    //     ]);
-    // }
+    public function handle(): void
+    {
+        Task::updateOrCreate(
+            ['id' => $this->task_id],
+            [
+                'user_id' => $this->user_id,
+                'title' => $this->title,
+                'description' => $this->description,
+                'status' => $this->status,
+                'priority' => $this->priority,
+                'due_date' => $this->due_date,
+                'completed_at' => $this->completed_at,
+            ]
+        );
+    }
 }

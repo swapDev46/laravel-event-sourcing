@@ -14,7 +14,7 @@ class TaskDeleted extends Event
 
     public function apply(TaskState $state): void
     {
-        $state->deleted = true;
+        $state->exists = false;
     }
 
     public function handle(): void

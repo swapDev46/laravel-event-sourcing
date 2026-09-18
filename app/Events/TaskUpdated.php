@@ -21,6 +21,14 @@ class TaskUpdated extends Event
 
     public ?string $due_date = null;
 
+    public function apply(TaskState $state): void
+    {
+        $state->title = $this->title;
+        $state->description = $this->description;
+        $state->priority = $this->priority;
+        $state->due_date = $this->due_date;
+    }
+
     public function handle(): void
     {
         Task::query()
@@ -31,13 +39,5 @@ class TaskUpdated extends Event
                 'priority' => $this->priority,
                 'due_date' => $this->due_date,
             ]);
-    }
-
-    public function apply(TaskState $state): void
-    {
-        $state->title = $this->title;
-        $state->description = $this->description;
-        $state->priority = $this->priority;
-        $state->due_date = $this->due_date;
     }
 }
